@@ -1,0 +1,306 @@
+
+URL : https://exitcondition.com/install-hadoop-windows/
+
+Repository : D:\rk
+
+all set directory : D:\rk\hadoop
+
+Microsoft Windows [Version 10.0.22621.819]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\System32>cd \
+
+C:\>hadoop version
+Hadoop 2.9.1
+Subversion https://github.com/apache/hadoop.git -r e30710aea4e6e55e69372929106cf119af06fd0e
+Compiled by root on 2018-04-16T09:33Z
+Compiled with protoc 2.5.0
+From source with checksum 7d6d2b655115c6cc336d662cc2b919bd
+This command was run using /C:/hadoop/share/hadoop/common/hadoop-common-2.9.1.jar
+
+C:\>echo %HADOOP_HOME%
+C:\hadoop
+
+C:\>echo %HADOOP_BIN%
+C:\hadoop\bin
+
+C:\>echo %PATH%
+C:\hadoop\sbin;C:\hadoop\bin;C:\Progra~1\Java\jdk1.8.0_202\bin;C:\Windows;C:\Windows\System32;C:\Windows\System32\wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Users\akh\AppData\Local\Microsoft\WindowsApps
+
+C:\>
+
+C:\>hadoop namenode -format
+DEPRECATED: Use of this script to execute hdfs command is deprecated.
+Instead use the hdfs command for it.
+22/12/01 21:52:49 INFO namenode.NameNode: STARTUP_MSG:
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = AK/192.168.56.1
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 2.9.1
+
+C:\>start-all
+This script is Deprecated. Instead use start-dfs.cmd and start-yarn.cmd
+starting yarn daemons
+
+C:\>jps
+18736 Jps
+21700 ResourceManager
+22836 NameNode
+3012 NodeManager
+2536 DataNode
+
+C:\>
+
+
+C:\>hdfs dfs -ls /
+
+C:\>hdfs dfs -mkdir /test
+
+C:\>hdfs dfs -ls /
+Found 1 items
+drwxr-xr-x   - akh supergroup          0 2022-12-01 22:04 /test
+
+C:\>hdfs dfs -copyFromLocal Sample.txt /test
+
+C:\>hdfs dfs -ls /test
+Found 1 items
+-rw-r--r--   1 akh supergroup         14 2022-12-01 22:06 /test/Sample.txt
+
+C:\>hdfs dfs -cat /test/Sample.txt
+Hi I am Hadoop
+C:\>hdfs dfs -copyFromLocal Sample.txt /test
+copyFromLocal: `/test/Sample.txt': File exists
+
+C:\>hdfs dfs -mv /test/Sample.txt /test/Sample_old.txt
+
+C:\>hdfs dfs -copyFromLocal Sample.txt /test
+
+C:\>hdfs dfs -cat /test/Sample.txt
+Hi I am Hadoop
+Hello World!
+This is a Sample text test file feed to Test Hadoop
+
+Good Bye! O.O !
+C:\>
+
+C:\>hdfs fsck /
+Connecting to namenode via http://0.0.0.0:50070/fsck?ugi=akh&path=%2F
+FSCK started by akh (auth:SIMPLE) from /192.168.56.1 for path / at Thu Dec 01 22:16:48 IST 2022
+..Status: HEALTHY
+ Total size:    114 B
+ Total dirs:    2
+ Total files:   2
+ Total symlinks:                0
+ Total blocks (validated):      2 (avg. block size 57 B)
+ Minimally replicated blocks:   2 (100.0 %)
+ Over-replicated blocks:        0 (0.0 %)
+ Under-replicated blocks:       0 (0.0 %)
+ Mis-replicated blocks:         0 (0.0 %)
+ Default replication factor:    1
+ Average block replication:     1.0
+ Corrupt blocks:                0
+ Missing replicas:              0 (0.0 %)
+ Number of data-nodes:          1
+ Number of racks:               1
+FSCK ended at Thu Dec 01 22:16:48 IST 2022 in 3 milliseconds
+
+
+The filesystem under path '/' is HEALTHY
+
+C:\>
+
+
+C:\>hdfs dfs -ls /
+Found 1 items
+drwxr-xr-x   - akh supergroup          0 2022-12-01 22:13 /test
+
+C:\>
+
+
+C:\>hdfs dfs -mkdir -p /ravi/amit
+
+C:\>hdfs dfs -touchz /ravi/amit/EmptyFile.txt
+
+C:\>hdfs dfs -ls /
+Found 2 items
+drwxr-xr-x   - akh supergroup          0 2022-12-01 22:20 /ravi
+drwxr-xr-x   - akh supergroup          0 2022-12-01 22:13 /test
+
+C:\>hdfs dfs -ls /ravi
+Found 1 items
+drwxr-xr-x   - akh supergroup          0 2022-12-01 22:21 /ravi/amit
+
+C:\>hdfs dfs -ls /ravi/amit
+Found 1 items
+-rw-r--r--   1 akh supergroup          0 2022-12-01 22:21 /ravi/amit/EmptyFile.txt
+
+C:\>
+
+C:\>hdfs dfs -du -s /ravi/amit/EmptyFile.txt
+0  /ravi/amit/EmptyFile.txt
+
+C:\>hdfs dfs -du -s /test/Sample.txt
+100  /test/Sample.txt
+
+
+C:\>
+
+C:\>hdfs dfs -copyToLocal /ravi/amit/EmptyFile.txt .
+
+C:\>dir EmptyFile.txt
+ Volume in drive C has no label.
+ Volume Serial Number is D4C5-CF46
+
+ Directory of C:\
+
+01-12-2022  22:31                 0 EmptyFile.txt
+               1 File(s)              0 bytes
+               0 Dir(s)  32,676,499,456 bytes free
+
+C:\>
+C:\>hdfs dfs -ls /test
+Found 2 items
+-rw-r--r--   1 akh supergroup        100 2022-12-01 22:13 /test/Sample.txt
+-rw-r--r--   1 akh supergroup         14 2022-12-01 22:06 /test/Sample_old.txt
+
+C:\>hdfs dfs -copyToLocal /test/Sample_old.txt .
+
+C:\>dir Sample_old.txt
+ Volume in drive C has no label.
+ Volume Serial Number is D4C5-CF46
+
+ Directory of C:\
+
+01-12-2022  22:34                14 Sample_old.txt
+               1 File(s)             14 bytes
+               0 Dir(s)  32,679,768,064 bytes free
+
+C:\>
+
+
+
+C:\>hdfs
+Usage: hdfs [--config confdir] [--loglevel loglevel] COMMAND
+       where COMMAND is one of:
+  dfs                  run a filesystem command on the file systems supported in Hadoop.
+  namenode -format     format the DFS filesystem
+  secondarynamenode    run the DFS secondary namenode
+  namenode             run the DFS namenode
+  journalnode          run the DFS journalnode
+  zkfc                 run the ZK Failover Controller daemon
+  datanode             run a DFS datanode
+  dfsadmin             run a DFS admin client
+  haadmin              run a DFS HA admin client
+  fsck                 run a DFS filesystem checking utility
+  balancer             run a cluster balancing utility
+  jmxget               get JMX exported values from NameNode or DataNode.
+  oiv                  apply the offline fsimage viewer to an fsimage
+  oev                  apply the offline edits viewer to an edits file
+  fetchdt              fetch a delegation token from the NameNode
+  getconf              get config values from configuration
+  groups               get the groups which users belong to
+  snapshotDiff         diff two snapshots of a directory or diff the
+                       current directory contents with a snapshot
+  lsSnapshottableDir   list all snapshottable dirs owned by the current user
+                                                Use -help to see options
+  cacheadmin           configure the HDFS cache
+  mover                run a utility to move block replicas across storage types
+  storagepolicies      list/get/set block storage policies
+
+Most commands print help when invoked w/o parameters.
+
+C:\>hdfs dfs
+Usage: hadoop fs [generic options]
+        [-appendToFile <localsrc> ... <dst>]
+        [-cat [-ignoreCrc] <src> ...]
+        [-checksum <src> ...]
+        [-chgrp [-R] GROUP PATH...]
+        [-chmod [-R] <MODE[,MODE]... | OCTALMODE> PATH...]
+        [-chown [-R] [OWNER][:[GROUP]] PATH...]
+        [-copyFromLocal [-f] [-p] [-l] [-d] <localsrc> ... <dst>]
+        [-copyToLocal [-f] [-p] [-ignoreCrc] [-crc] <src> ... <localdst>]
+        [-count [-q] [-h] [-v] [-t [<storage type>]] [-u] [-x] <path> ...]
+        [-cp [-f] [-p | -p[topax]] [-d] <src> ... <dst>]
+        [-createSnapshot <snapshotDir> [<snapshotName>]]
+        [-deleteSnapshot <snapshotDir> <snapshotName>]
+        [-df [-h] [<path> ...]]
+        [-du [-s] [-h] [-x] <path> ...]
+        [-expunge]
+        [-find <path> ... <expression> ...]
+        [-get [-f] [-p] [-ignoreCrc] [-crc] <src> ... <localdst>]
+        [-getfacl [-R] <path>]
+        [-getfattr [-R] {-n name | -d} [-e en] <path>]
+        [-getmerge [-nl] [-skip-empty-file] <src> <localdst>]
+        [-help [cmd ...]]
+        [-ls [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [<path> ...]]
+        [-mkdir [-p] <path> ...]
+        [-moveFromLocal <localsrc> ... <dst>]
+        [-moveToLocal <src> <localdst>]
+        [-mv <src> ... <dst>]
+        [-put [-f] [-p] [-l] [-d] <localsrc> ... <dst>]
+        [-renameSnapshot <snapshotDir> <oldName> <newName>]
+        [-rm [-f] [-r|-R] [-skipTrash] [-safely] <src> ...]
+        [-rmdir [--ignore-fail-on-non-empty] <dir> ...]
+        [-setfacl [-R] [{-b|-k} {-m|-x <acl_spec>} <path>]|[--set <acl_spec> <path>]]
+        [-setfattr {-n name [-v value] | -x name} <path>]
+        [-setrep [-R] [-w] <rep> <path> ...]
+        [-stat [format] <path> ...]
+        [-tail [-f] <file>]
+        [-test -[defsz] <path>]
+        [-text [-ignoreCrc] <src> ...]
+        [-touchz <path> ...]
+        [-truncate [-w] <length> <path> ...]
+        [-usage [cmd ...]]
+
+Generic options supported are:
+-conf <configuration file>        specify an application configuration file
+-D <property=value>               define a value for a given property
+-fs <file:///|hdfs://namenode:port> specify default filesystem URL to use, overrides 'fs.defaultFS' property from configurations.
+-jt <local|resourcemanager:port>  specify a ResourceManager
+-files <file1,...>                specify a comma-separated list of files to be copied to the map reduce cluster
+-libjars <jar1,...>               specify a comma-separated list of jar files to be included in the classpath
+-archives <archive1,...>          specify a comma-separated list of archives to be unarchived on the compute machines
+
+The general command line syntax is:
+command [genericOptions] [commandOptions]
+
+
+C:\>
+
+
+C:\>hdfs dfs -copyToLocal /test/Sample_old.txt hdfs://0.0.0.0:19000/c:/
+
+C:\>hdfs dfs -copyToLocal /test/Sample_old.txt hdfs://0.0.0.0:19000/d:/
+
+C:\>dir d:\Sample*.*
+ Volume in drive D is New Volume
+ Volume Serial Number is A67E-CF1E
+
+ Directory of d:\
+
+01-12-2022  22:43                14 Sample_old.txt
+               1 File(s)             14 bytes
+               0 Dir(s)  137,663,279,104 bytes free
+
+C:\>
+
+
+C:\>hdfs dfs -count /
+           4            3                114 /
+
+C:\>
+
+C:\>stop-all
+This script is Deprecated. Instead use stop-dfs.cmd and stop-yarn.cmd
+SUCCESS: Sent termination signal to the process with PID 23032.
+SUCCESS: Sent termination signal to the process with PID 12500.
+stopping yarn daemons
+SUCCESS: Sent termination signal to the process with PID 13876.
+SUCCESS: Sent termination signal to the process with PID 22636.
+
+INFO: No tasks running with the specified criteria.
+
+C:\>jps
+24352 Jps		   
+
